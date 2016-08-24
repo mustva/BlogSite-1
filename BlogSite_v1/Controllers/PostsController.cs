@@ -10,6 +10,7 @@ namespace BlogSite_v1.Controllers
     public class PostsController : Controller
     {
         BlogSiteEntities db = new BlogSiteEntities();
+
         // GET: Post
         public ActionResult Index()
         {
@@ -23,6 +24,38 @@ namespace BlogSite_v1.Controllers
 
 
             return View(pcc);
+        }
+
+        public ActionResult Details(int? id)
+        {
+            Post post = new Post();
+            post = db.Post.Find(id);
+
+            var comments = from x in db.Comment
+                           where (x.PostID == post.PostId)
+                           select x;
+
+            post.Comment = comments.ToList();
+
+
+
+            if (id == null)
+            {
+                //
+            }
+
+            if (post == null)
+            {
+                //
+            }
+            return View(post);
+        }
+
+        public ActionResult Edit()
+        {
+
+
+            return View();
         }
     }
 }

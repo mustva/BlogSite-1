@@ -1,7 +1,43 @@
-﻿
+﻿@model BlogSite_v1.Models.Post
 @{
     ViewBag.Title = "Details";
 }
 
 <h2>Details</h2>
+
+<div>
+    <h4>Comment</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.PostTitle)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PostTitle)
+        </dd>
+
+
+
+        <dt>
+
+        </dt>
+    </dl>
+    <div>
+        <dl>
+            @foreach (var cat in Model.Comment)
+            {
+
+                <dt>
+                    @cat.CommentContext;
+                </dt>
+
+                    <dd>
+                        @cat.CommentDate;
+                    </dd>
+            }
+        </dl>
+    </div>
+</div>
+
 
