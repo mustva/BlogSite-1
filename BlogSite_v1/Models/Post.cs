@@ -18,10 +18,10 @@ namespace BlogSite_v1.Models
         public Post()
         {
             this.Comment = new HashSet<Comment>();
-            this.Category = new HashSet<Category>();
+            this.PostCategory = new HashSet<PostCategory>();
         }
     
-        public int PostID { get; set; }
+        public int PostId { get; set; }
         public string PostTitle { get; set; }
         public System.DateTime PostDate { get; set; }
         public string PostContext { get; set; }
@@ -31,6 +31,6 @@ namespace BlogSite_v1.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Comment> Comment { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Category> Category { get; set; }
+        public virtual ICollection<PostCategory> PostCategory { get; set; }
     }
 }

@@ -32,6 +32,6 @@ namespace BlogSite_v1.Models
         public virtual DbSet<Category> Category { get; set; }
         public virtual DbSet<Comment> Comment { get; set; }
         public virtual DbSet<Post> Post { get; set; }
-        public virtual DbSet<sysdiagrams> sysdiagrams { get; set; }
+        public virtual DbSet<PostCategory> PostCategory { get; set; }
     }
 }

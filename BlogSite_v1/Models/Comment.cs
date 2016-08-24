@@ -14,7 +14,7 @@ namespace BlogSite_v1.Models
     
     public partial class Comment
     {
-        public int CommentID { get; set; }
+        public int CommentId { get; set; }
         public string CommentContext { get; set; }
         public System.DateTime CommentDate { get; set; }
         public int UserID { get; set; }

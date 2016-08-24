@@ -17,13 +17,13 @@ namespace BlogSite_v1.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Category()
         {
-            this.Post = new HashSet<Post>();
+            this.PostCategory = new HashSet<PostCategory>();
         }
     
         public int CategoryId { get; set; }
         public string CategoryName { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Post> Post { get; set; }
+        public virtual ICollection<PostCategory> PostCategory { get; set; }
     }
 }

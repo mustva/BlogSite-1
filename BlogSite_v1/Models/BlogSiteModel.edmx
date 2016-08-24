@@ -55,21 +55,19 @@
           <Property Name="LockoutEnabled" Type="bit" Nullable="false" />
           <Property Name="AccessFailedCount" Type="int" Nullable="false" />
           <Property Name="UserName" Type="nvarchar" MaxLength="256" Nullable="false" />
-          <Property Name="UserJoinTime" Type="datetime" />
-          <Property Name="CommentID" Type="int" />
         </EntityType>
         <EntityType Name="Category">
           <Key>
             <PropertyRef Name="CategoryId" />
           </Key>
           <Property Name="CategoryId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="CategoryName" Type="nvarchar(max)" />
+          <Property Name="CategoryName" Type="varchar" MaxLength="50" Nullable="false" />
         </EntityType>
         <EntityType Name="Comment">
           <Key>
-            <PropertyRef Name="CommentID" />
+            <PropertyRef Name="CommentId" />
           </Key>
-          <Property Name="CommentID" Type="int" Nullable="false" />
+          <Property Name="CommentId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="CommentContext" Type="text" Nullable="false" />
           <Property Name="CommentDate" Type="datetime" Nullable="false" />
           <Property Name="UserID" Type="int" Nullable="false" />
@@ -77,40 +75,28 @@
         </EntityType>
         <EntityType Name="Post">
           <Key>
-            <PropertyRef Name="PostID" />
+            <PropertyRef Name="PostId" />
           </Key>
-          <Property Name="PostID" Type="int" Nullable="false" />
+          <Property Name="PostId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="PostTitle" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="PostDate" Type="datetime" Nullable="false" />
           <Property Name="PostContext" Type="text" Nullable="false" />
           <Property Name="UserID" Type="int" Nullable="false" />
         </EntityType>
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'BlogSite.dbo.PostCategory' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="PostCategory">
           <Key>
-            <PropertyRef Name="PostID" />
-            <PropertyRef Name="CategoryID" />
+            <PropertyRef Name="PostCategoryId" />
           </Key>
-          <Property Name="PostID" Type="int" Nullable="false" />
-          <Property Name="CategoryID" Type="int" Nullable="false" />
-        </EntityType>
-        <EntityType Name="sysdiagrams">
-          <Key>
-            <PropertyRef Name="diagram_id" />
-          </Key>
-          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
-          <Property Name="principal_id" Type="int" Nullable="false" />
-          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="version" Type="int" />
-          <Property Name="definition" Type="varbinary(max)" />
+          <Property Name="PostId" Type="int" Nullable="false" />
+          <Property Name="CategoryId" Type="int" Nullable="false" />
+          <Property Name="PostCategoryId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
         </EntityType>
         <Association Name="FK_Comment_Post_PostID">
           <End Role="Post" Type="Self.Post" Multiplicity="1" />
           <End Role="Comment" Type="Self.Comment" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Post">
-              <PropertyRef Name="PostID" />
+              <PropertyRef Name="PostId" />
             </Principal>
             <Dependent Role="Comment">
               <PropertyRef Name="PostID" />
@@ -193,7 +179,7 @@ warning 6002: The table/view 'BlogSite.dbo.PostCategory' does not have a primary
               <PropertyRef Name="CategoryId" />
             </Principal>
             <Dependent Role="PostCategory">
-              <PropertyRef Name="CategoryID" />
+              <PropertyRef Name="CategoryId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -202,10 +188,10 @@ warning 6002: The table/view 'BlogSite.dbo.PostCategory' does not have a primary
           <End Role="PostCategory" Type="Self.PostCategory" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Post">
-              <PropertyRef Name="PostID" />
+              <PropertyRef Name="PostId" />
             </Principal>
             <Dependent Role="PostCategory">
-              <PropertyRef Name="PostID" />
+              <PropertyRef Name="PostId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -230,13 +216,7 @@ warning 6002: The table/view 'BlogSite.dbo.PostCategory' does not have a primary
           <EntitySet Name="Category" EntityType="Self.Category" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Comment" EntityType="Self.Comment" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Post" EntityType="Self.Post" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="PostCategory" EntityType="Self.PostCategory" store:Type="Tables" store:Schema="dbo">
-            <DefiningQuery>SELECT 
-    [PostCategory].[PostID] AS [PostID], 
-    [PostCategory].[CategoryID] AS [CategoryID]
-    FROM [dbo].[PostCategory] AS [PostCategory]</DefiningQuery>
-          </EntitySet>
+          <EntitySet Name="PostCategory" EntityType="Self.PostCategory" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK_Comment_Post_PostID" Association="Self.FK_Comment_Post_PostID">
             <End Role="Post" EntitySet="Post" />
             <End Role="Comment" EntitySet="Comment" />
@@ -324,8 +304,6 @@ warning 6002: The table/view 'BlogSite.dbo.PostCategory' does not have a primary
           <Property Name="LockoutEnabled" Type="Boolean" Nullable="false" />
           <Property Name="AccessFailedCount" Type="Int32" Nullable="false" />
           <Property Name="UserName" Type="String" MaxLength="256" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="UserJoinTime" Type="DateTime" Precision="3" />
-          <Property Name="CommentID" Type="Int32" />
           <NavigationProperty Name="AspNetUserClaims" Relationship="Self.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" FromRole="AspNetUsers" ToRole="AspNetUserClaims" />
           <NavigationProperty Name="AspNetUserLogins" Relationship="Self.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" FromRole="AspNetUsers" ToRole="AspNetUserLogins" />
           <NavigationProperty Name="Comment" Relationship="Self.FK_Comment_User_UserID" FromRole="AspNetUsers" ToRole="Comment" />
@@ -337,14 +315,14 @@ warning 6002: The table/view 'BlogSite.dbo.PostCategory' does not have a primary
             <PropertyRef Name="CategoryId" />
           </Key>
           <Property Name="CategoryId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="CategoryName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="Post" Relationship="Self.PostCategory" FromRole="Category" ToRole="Post" />
+          <Property Name="CategoryName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="PostCategory" Relationship="Self.FK_Post_Category_CategoryID" FromRole="Category" ToRole="PostCategory" />
         </EntityType>
         <EntityType Name="Comment">
           <Key>
-            <PropertyRef Name="CommentID" />
+            <PropertyRef Name="CommentId" />
           </Key>
-          <Property Name="CommentID" Type="Int32" Nullable="false" />
+          <Property Name="CommentId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="CommentContext" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="CommentDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="UserID" Type="Int32" Nullable="false" />
@@ -354,26 +332,26 @@ warning 6002: The table/view 'BlogSite.dbo.PostCategory' does not have a primary
         </EntityType>
         <EntityType Name="Post">
           <Key>
-            <PropertyRef Name="PostID" />
+            <PropertyRef Name="PostId" />
           </Key>
-          <Property Name="PostID" Type="Int32" Nullable="false" />
+          <Property Name="PostId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="PostTitle" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="PostDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="PostContext" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="UserID" Type="Int32" Nullable="false" />
           <NavigationProperty Name="AspNetUsers" Relationship="Self.FK_Post_User_UserID" FromRole="Post" ToRole="AspNetUsers" />
           <NavigationProperty Name="Comment" Relationship="Self.FK_Comment_Post_PostID" FromRole="Post" ToRole="Comment" />
-          <NavigationProperty Name="Category" Relationship="Self.PostCategory" FromRole="Post" ToRole="Category" />
+          <NavigationProperty Name="PostCategory" Relationship="Self.FK_Post_Category_PostID" FromRole="Post" ToRole="PostCategory" />
         </EntityType>
-        <EntityType Name="sysdiagrams">
+        <EntityType Name="PostCategory">
           <Key>
-            <PropertyRef Name="diagram_id" />
+            <PropertyRef Name="PostCategoryId" />
           </Key>
-          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="principal_id" Type="Int32" Nullable="false" />
-          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="version" Type="Int32" />
-          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <Property Name="PostId" Type="Int32" Nullable="false" />
+          <Property Name="CategoryId" Type="Int32" Nullable="false" />
+          <Property Name="PostCategoryId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <NavigationProperty Name="Category" Relationship="Self.FK_Post_Category_CategoryID" FromRole="PostCategory" ToRole="Category" />
+          <NavigationProperty Name="Post" Relationship="Self.FK_Post_Category_PostID" FromRole="PostCategory" ToRole="Post" />
         </EntityType>
         <Association Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
           <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1">
@@ -427,25 +405,45 @@ warning 6002: The table/view 'BlogSite.dbo.PostCategory' does not have a primary
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Post_Category_CategoryID">
+          <End Role="Category" Type="Self.Category" Multiplicity="1" />
+          <End Role="PostCategory" Type="Self.PostCategory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Category">
+              <PropertyRef Name="CategoryId" />
+            </Principal>
+            <Dependent Role="PostCategory">
+              <PropertyRef Name="CategoryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Comment_Post_PostID">
           <End Role="Post" Type="Self.Post" Multiplicity="1" />
           <End Role="Comment" Type="Self.Comment" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Post">
-              <PropertyRef Name="PostID" />
+              <PropertyRef Name="PostId" />
             </Principal>
             <Dependent Role="Comment">
               <PropertyRef Name="PostID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Post_Category_PostID">
+          <End Role="Post" Type="Self.Post" Multiplicity="1" />
+          <End Role="PostCategory" Type="Self.PostCategory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Post">
+              <PropertyRef Name="PostId" />
+            </Principal>
+            <Dependent Role="PostCategory">
+              <PropertyRef Name="PostId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="AspNetUserRoles">
           <End Role="AspNetRoles" Type="Self.AspNetRoles" Multiplicity="*" />
           <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="*" />
-        </Association>
-        <Association Name="PostCategory">
-          <End Role="Category" Type="Self.Category" Multiplicity="*" />
-          <End Role="Post" Type="Self.Post" Multiplicity="*" />
         </Association>
         <EntityContainer Name="BlogSiteEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="AspNetRoles" EntityType="Self.AspNetRoles" />
@@ -455,7 +453,7 @@ warning 6002: The table/view 'BlogSite.dbo.PostCategory' does not have a primary
           <EntitySet Name="Category" EntityType="Self.Category" />
           <EntitySet Name="Comment" EntityType="Self.Comment" />
           <EntitySet Name="Post" EntityType="Self.Post" />
-          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" />
+          <EntitySet Name="PostCategory" EntityType="Self.PostCategory" />
           <AssociationSet Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" Association="Self.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="AspNetUserClaims" EntitySet="AspNetUserClaims" />
@@ -472,17 +470,21 @@ warning 6002: The table/view 'BlogSite.dbo.PostCategory' does not have a primary
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="Post" EntitySet="Post" />
           </AssociationSet>
+          <AssociationSet Name="FK_Post_Category_CategoryID" Association="Self.FK_Post_Category_CategoryID">
+            <End Role="Category" EntitySet="Category" />
+            <End Role="PostCategory" EntitySet="PostCategory" />
+          </AssociationSet>
           <AssociationSet Name="FK_Comment_Post_PostID" Association="Self.FK_Comment_Post_PostID">
             <End Role="Post" EntitySet="Post" />
             <End Role="Comment" EntitySet="Comment" />
           </AssociationSet>
+          <AssociationSet Name="FK_Post_Category_PostID" Association="Self.FK_Post_Category_PostID">
+            <End Role="Post" EntitySet="Post" />
+            <End Role="PostCategory" EntitySet="PostCategory" />
+          </AssociationSet>
           <AssociationSet Name="AspNetUserRoles" Association="Self.AspNetUserRoles">
             <End Role="AspNetRoles" EntitySet="AspNetRoles" />
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
-          </AssociationSet>
-          <AssociationSet Name="PostCategory" Association="Self.PostCategory">
-            <End Role="Category" EntitySet="Category" />
-            <End Role="Post" EntitySet="Post" />
           </AssociationSet>
         </EntityContainer>
       </Schema>
@@ -533,8 +535,6 @@ warning 6002: The table/view 'BlogSite.dbo.PostCategory' does not have a primary
                 <ScalarProperty Name="LockoutEnabled" ColumnName="LockoutEnabled" />
                 <ScalarProperty Name="AccessFailedCount" ColumnName="AccessFailedCount" />
                 <ScalarProperty Name="UserName" ColumnName="UserName" />
-                <ScalarProperty Name="UserJoinTime" ColumnName="UserJoinTime" />
-                <ScalarProperty Name="CommentID" ColumnName="CommentID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -549,7 +549,7 @@ warning 6002: The table/view 'BlogSite.dbo.PostCategory' does not have a primary
           <EntitySetMapping Name="Comment">
             <EntityTypeMapping TypeName="BlogSiteModel.Comment">
               <MappingFragment StoreEntitySet="Comment">
-                <ScalarProperty Name="CommentID" ColumnName="CommentID" />
+                <ScalarProperty Name="CommentId" ColumnName="CommentId" />
                 <ScalarProperty Name="CommentContext" ColumnName="CommentContext" />
                 <ScalarProperty Name="CommentDate" ColumnName="CommentDate" />
                 <ScalarProperty Name="UserID" ColumnName="UserID" />
@@ -560,7 +560,7 @@ warning 6002: The table/view 'BlogSite.dbo.PostCategory' does not have a primary
           <EntitySetMapping Name="Post">
             <EntityTypeMapping TypeName="BlogSiteModel.Post">
               <MappingFragment StoreEntitySet="Post">
-                <ScalarProperty Name="PostID" ColumnName="PostID" />
+                <ScalarProperty Name="PostId" ColumnName="PostId" />
                 <ScalarProperty Name="PostTitle" ColumnName="PostTitle" />
                 <ScalarProperty Name="PostDate" ColumnName="PostDate" />
                 <ScalarProperty Name="PostContext" ColumnName="PostContext" />
@@ -568,14 +568,12 @@ warning 6002: The table/view 'BlogSite.dbo.PostCategory' does not have a primary
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="sysdiagrams">
-            <EntityTypeMapping TypeName="BlogSiteModel.sysdiagrams">
-              <MappingFragment StoreEntitySet="sysdiagrams">
-                <ScalarProperty Name="name" ColumnName="name" />
-                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
-                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
-                <ScalarProperty Name="version" ColumnName="version" />
-                <ScalarProperty Name="definition" ColumnName="definition" />
+          <EntitySetMapping Name="PostCategory">
+            <EntityTypeMapping TypeName="BlogSiteModel.PostCategory">
+              <MappingFragment StoreEntitySet="PostCategory">
+                <ScalarProperty Name="PostId" ColumnName="PostId" />
+                <ScalarProperty Name="CategoryId" ColumnName="CategoryId" />
+                <ScalarProperty Name="PostCategoryId" ColumnName="PostCategoryId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -585,14 +583,6 @@ warning 6002: The table/view 'BlogSite.dbo.PostCategory' does not have a primary
             </EndProperty>
             <EndProperty Name="AspNetUsers">
               <ScalarProperty Name="Id" ColumnName="UserId" />
-            </EndProperty>
-          </AssociationSetMapping>
-          <AssociationSetMapping Name="PostCategory" TypeName="BlogSiteModel.PostCategory" StoreEntitySet="PostCategory">
-            <EndProperty Name="Category">
-              <ScalarProperty Name="CategoryId" ColumnName="CategoryID" />
-            </EndProperty>
-            <EndProperty Name="Post">
-              <ScalarProperty Name="PostID" ColumnName="PostID" />
             </EndProperty>
           </AssociationSetMapping>
         </EntityContainerMapping>

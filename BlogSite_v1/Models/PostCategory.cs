@@ -12,12 +12,13 @@ namespace BlogSite_v1.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class sysdiagrams
+    public partial class PostCategory
     {
-        public string name { get; set; }
-        public int principal_id { get; set; }
-        public int diagram_id { get; set; }
-        public Nullable<int> version { get; set; }
-        public byte[] definition { get; set; }
+        public int PostId { get; set; }
+        public int CategoryId { get; set; }
+        public int PostCategoryId { get; set; }
+    
+        public virtual Category Category { get; set; }
+        public virtual Post Post { get; set; }
     }
 }

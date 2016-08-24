@@ -1,0 +1,59 @@
+﻿@model BlogSite_v1.Models.PostCategoryContext
+
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Post.PostTitle)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Post.PostDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Post.PostContext)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Category.CategoryName)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model.Posts)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.PostTitle)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PostDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PostContext)
+            </td>
+            <td>
+                @foreach(var cat in Model.PostCategories)
+                {
+                    if(cat.PostId == item.PostId)
+                    {
+                        @cat.Category.CategoryName;
+                    }
+                }
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.PostId }) |
+                @Html.ActionLink("Details", "Details", new { id = item.PostId }) |
+            </td>
+        </tr>
+    }
+
