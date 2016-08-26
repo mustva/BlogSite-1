@@ -4,15 +4,15 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="ab34cdf220f34d1d8d9da1f840024882" Name="Diagram1" ZoomLevel="78">
+      <Diagram DiagramId="97016ec0d41d405d99027de19e8ad2ac" Name="Diagram1" ZoomLevel="78">
         <EntityTypeShape EntityType="BlogSiteModel.AspNetRoles" Width="1.5" PointX="0.75" PointY="6" IsExpanded="true" />
         <EntityTypeShape EntityType="BlogSiteModel.AspNetUserClaims" Width="1.5" PointX="5.25" PointY="2.875" IsExpanded="true" />
         <EntityTypeShape EntityType="BlogSiteModel.AspNetUserLogins" Width="1.5" PointX="5.25" PointY="5.625" IsExpanded="true" />
         <EntityTypeShape EntityType="BlogSiteModel.AspNetUsers" Width="1.5" PointX="3" PointY="4.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="BlogSiteModel.Category" Width="1.5" PointX="4.75" PointY="9.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="BlogSiteModel.Comment" Width="1.5" PointX="8.75" PointY="8.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="BlogSiteModel.Post" Width="1.5" PointX="4.125" PointY="12.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="BlogSiteModel.PostCategory" Width="1.5" PointX="6.75" PointY="11.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="BlogSiteModel.Category" Width="1.5" PointX="5.25" PointY="8.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="BlogSiteModel.Comment" Width="1.5" PointX="7.5" PointY="8.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="BlogSiteModel.Post" Width="1.5" PointX="5.25" PointY="11.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="BlogSiteModel.PostCategory" Width="1.5" PointX="7.5" PointY="11.625" IsExpanded="true" />
         <AssociationConnector Association="BlogSiteModel.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" ManuallyRouted="false" />
         <AssociationConnector Association="BlogSiteModel.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" ManuallyRouted="false" />
         <AssociationConnector Association="BlogSiteModel.FK_Comment_User_UserID" ManuallyRouted="false" />

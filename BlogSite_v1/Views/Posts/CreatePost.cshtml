@@ -37,14 +37,17 @@
             </div>
         </div>
 
-        @foreach (var item in Model.Categories)
+        
+
+        @for(var i=0; i < Model.Categories.Count(); i++)
         {
-            @item.CategoryName
-            @Html.CheckBox(item.CategoryName, false)
+            @Html.HiddenFor(x=> x.Categories[i].CategoryId)
+            @Html.CheckBoxFor(x => x.Categories[i].IsChecked)
+            @Html.DisplayFor(x=> x.Categories[i].CategoryName)
             <br />
         }
 
-      @* @Html.ListBox("categories", TempData.Peek("categories") as MultiSelectList) *@
+     
 
        
        

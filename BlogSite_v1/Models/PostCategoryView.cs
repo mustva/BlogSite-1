@@ -17,7 +17,7 @@ namespace BlogSite_v1.Models
         public virtual PostCategory PostCategory { get; set; }
 
         
-        public List<int> SelectedCategoryIds { get; set; }
+        
 
 
         

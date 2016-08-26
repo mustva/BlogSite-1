@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using BlogSite_v1.Models;
 using System.Data.Entity;
 using Microsoft.AspNet.Identity;
+using System.Threading.Tasks;
 
 namespace BlogSite_v1.Controllers
 {
@@ -52,6 +53,7 @@ namespace BlogSite_v1.Controllers
 
 
         Post post = new Post();
+        PostCategory postCategory = new PostCategory();
         PostCategoryView pc = new PostCategoryView();
 
         public ActionResult CreatePost()
@@ -63,6 +65,8 @@ namespace BlogSite_v1.Controllers
 
 
 
+
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult CreatePost(PostCategoryView postcc)
@@ -70,15 +74,36 @@ namespace BlogSite_v1.Controllers
             if (ModelState.IsValid)
             {
 
+
                 post.UserId = Convert.ToInt32(User.Identity.GetUserId());
                 post.PostDate = DateTime.Now.Date;
                 post.PostTitle = postcc.Post.PostTitle;
                 post.PostContext = postcc.Post.PostContext;
-
-#warning Saves Without Category
-
                 db.Post.Add(post);
-                db.SaveChanges();
+
+
+                var checkedCat = from x in postcc.Categories
+                                 where x.IsChecked == true
+                                 select x;
+
+                if (checkedCat == null)
+                {
+#warning When the category is not selected, the post won't be saved. 
+#warning Kategori seçmeyince db.Save işlemiyor.
+                }
+
+
+                else
+                {
+                    foreach (var item in checkedCat)
+                    {
+
+                        postCategory.CategoryId = item.CategoryId;
+                        postCategory.PostId = post.PostId;
+                        db.PostCategory.Add(postCategory);
+                        db.SaveChanges();
+                    }
+                }
                 return RedirectToAction("Index");
             }
 
