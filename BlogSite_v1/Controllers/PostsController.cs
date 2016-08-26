@@ -70,9 +70,7 @@ namespace BlogSite_v1.Controllers
             if (ModelState.IsValid)
             {
 
-#warning Saves Without UserID
-
-                post.UserId = 1;
+                post.UserId = Convert.ToInt32(User.Identity.GetUserId());
                 post.PostDate = DateTime.Now.Date;
                 post.PostTitle = postcc.Post.PostTitle;
                 post.PostContext = postcc.Post.PostContext;
