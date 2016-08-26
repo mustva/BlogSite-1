@@ -22,6 +22,7 @@ namespace BlogSite_v1.Models
     
         public int CategoryId { get; set; }
         public string CategoryName { get; set; }
+        public Nullable<bool> IsChecked { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PostCategory> PostCategory { get; set; }

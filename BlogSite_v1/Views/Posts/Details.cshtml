@@ -6,11 +6,11 @@
 <h2>Details</h2>
 
 <div>
-    <h4>Comment</h4>
+    
     <hr />
     <dl class="dl-horizontal">
         <dt>
-            @Html.DisplayNameFor(model => model.PostTitle)
+            Details of Post:  
         </dt>
 
         <dd>
@@ -24,18 +24,23 @@
         </dt>
     </dl>
     <div>
+        <h4>Comments</h4>
         <dl>
             @foreach (var cat in Model.Comment)
             {
-
+                
                 <dt>
-                    @cat.CommentContext;
+                    @cat.AspNetUsers.UserName:
                 </dt>
-
-                    <dd>
-                        @cat.CommentDate;
-                    </dd>
+                <dd>
+                    @cat.CommentContext
+                </dd>
+                <dd>
+                    @cat.CommentDate
+                </dd>
+            <br />
             }
+            @Html.ActionLink("Go Back to Posts", "Index")
         </dl>
     </div>
 </div>

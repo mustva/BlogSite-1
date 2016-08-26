@@ -17,8 +17,8 @@ namespace BlogSite_v1.Models
         public int CommentId { get; set; }
         public string CommentContext { get; set; }
         public System.DateTime CommentDate { get; set; }
-        public int UserID { get; set; }
-        public int PostID { get; set; }
+        public int UserId { get; set; }
+        public int PostId { get; set; }
     
         public virtual AspNetUsers AspNetUsers { get; set; }
         public virtual Post Post { get; set; }

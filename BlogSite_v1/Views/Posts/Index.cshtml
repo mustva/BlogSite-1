@@ -1,4 +1,4 @@
-﻿@model BlogSite_v1.Models.PostCategoryContext
+﻿@model BlogSite_v1.Models.PostCategoryView
 
 
 @{
@@ -10,21 +10,21 @@
 
 
 <p>
-    @Html.ActionLink("Create New", "Create")
+    @Html.ActionLink("Create New", "CreatePost")
 </p>
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.Post.PostTitle)
+            Post
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Post.PostDate)
+            Post Date
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Post.PostContext)
+            Post Context
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Category.CategoryName)
+            Category
         </th>
         <th></th>
     </tr>
@@ -46,9 +46,10 @@
                 {
                     if(cat.PostId == item.PostId)
                     {
-                        @cat.Category.CategoryName;
+                        @cat.Category.CategoryName; <br />
                     }
                 }
+                
             </td>
             <td>
                 @Html.ActionLink("Edit", "Edit", new { id = item.PostId }) |

@@ -6,7 +6,7 @@ using System.Data.Entity;
 
 namespace BlogSite_v1.Models
 {
-    public class PostCategoryContext : DbContext
+    public class PostCategoryView : DbContext
     {
         public List<Category> Categories { get; set; }
         public List<Post> Posts { get; set; }
@@ -15,5 +15,12 @@ namespace BlogSite_v1.Models
         public virtual Post Post { get; set; }
         public virtual Category Category { get; set; }
         public virtual PostCategory PostCategory { get; set; }
+
+        
+        public List<int> SelectedCategoryIds { get; set; }
+
+
+        
+
     }
 }

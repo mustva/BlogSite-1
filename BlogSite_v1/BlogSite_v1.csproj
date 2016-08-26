@@ -218,7 +218,7 @@
     <Compile Include="Models\PostCategory.cs">
       <DependentUpon>BlogSiteModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\PostCategoryContext.cs" />
+    <Compile Include="Models\PostCategoryView.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
@@ -297,6 +297,7 @@
     <Content Include="Views\Posts\Index.cshtml" />
     <Content Include="Views\Posts\Edit.cshtml" />
     <Content Include="Views\Posts\Details.cshtml" />
+    <Content Include="Views\Posts\CreatePost.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

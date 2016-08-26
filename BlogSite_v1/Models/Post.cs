@@ -25,7 +25,7 @@ namespace BlogSite_v1.Models
         public string PostTitle { get; set; }
         public System.DateTime PostDate { get; set; }
         public string PostContext { get; set; }
-        public int UserID { get; set; }
+        public int UserId { get; set; }
     
         public virtual AspNetUsers AspNetUsers { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

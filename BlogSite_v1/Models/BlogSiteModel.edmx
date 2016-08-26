@@ -62,6 +62,7 @@
           </Key>
           <Property Name="CategoryId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="CategoryName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="IsChecked" Type="bit" />
         </EntityType>
         <EntityType Name="Comment">
           <Key>
@@ -70,8 +71,8 @@
           <Property Name="CommentId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="CommentContext" Type="text" Nullable="false" />
           <Property Name="CommentDate" Type="datetime" Nullable="false" />
-          <Property Name="UserID" Type="int" Nullable="false" />
-          <Property Name="PostID" Type="int" Nullable="false" />
+          <Property Name="UserId" Type="int" Nullable="false" />
+          <Property Name="PostId" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="Post">
           <Key>
@@ -81,7 +82,7 @@
           <Property Name="PostTitle" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="PostDate" Type="datetime" Nullable="false" />
           <Property Name="PostContext" Type="text" Nullable="false" />
-          <Property Name="UserID" Type="int" Nullable="false" />
+          <Property Name="UserId" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="PostCategory">
           <Key>
@@ -99,7 +100,7 @@
               <PropertyRef Name="PostId" />
             </Principal>
             <Dependent Role="Comment">
-              <PropertyRef Name="PostID" />
+              <PropertyRef Name="PostId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -111,7 +112,7 @@
               <PropertyRef Name="Id" />
             </Principal>
             <Dependent Role="Comment">
-              <PropertyRef Name="UserID" />
+              <PropertyRef Name="UserId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -203,7 +204,7 @@
               <PropertyRef Name="Id" />
             </Principal>
             <Dependent Role="Post">
-              <PropertyRef Name="UserID" />
+              <PropertyRef Name="UserId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -316,6 +317,7 @@
           </Key>
           <Property Name="CategoryId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="CategoryName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="IsChecked" Type="Boolean" />
           <NavigationProperty Name="PostCategory" Relationship="Self.FK_Post_Category_CategoryID" FromRole="Category" ToRole="PostCategory" />
         </EntityType>
         <EntityType Name="Comment">
@@ -325,8 +327,8 @@
           <Property Name="CommentId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="CommentContext" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="CommentDate" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="UserID" Type="Int32" Nullable="false" />
-          <Property Name="PostID" Type="Int32" Nullable="false" />
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+          <Property Name="PostId" Type="Int32" Nullable="false" />
           <NavigationProperty Name="AspNetUsers" Relationship="Self.FK_Comment_User_UserID" FromRole="Comment" ToRole="AspNetUsers" />
           <NavigationProperty Name="Post" Relationship="Self.FK_Comment_Post_PostID" FromRole="Comment" ToRole="Post" />
         </EntityType>
@@ -338,7 +340,7 @@
           <Property Name="PostTitle" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="PostDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="PostContext" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="UserID" Type="Int32" Nullable="false" />
+          <Property Name="UserId" Type="Int32" Nullable="false" />
           <NavigationProperty Name="AspNetUsers" Relationship="Self.FK_Post_User_UserID" FromRole="Post" ToRole="AspNetUsers" />
           <NavigationProperty Name="Comment" Relationship="Self.FK_Comment_Post_PostID" FromRole="Post" ToRole="Comment" />
           <NavigationProperty Name="PostCategory" Relationship="Self.FK_Post_Category_PostID" FromRole="Post" ToRole="PostCategory" />
@@ -389,7 +391,7 @@
               <PropertyRef Name="Id" />
             </Principal>
             <Dependent Role="Comment">
-              <PropertyRef Name="UserID" />
+              <PropertyRef Name="UserId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -401,7 +403,7 @@
               <PropertyRef Name="Id" />
             </Principal>
             <Dependent Role="Post">
-              <PropertyRef Name="UserID" />
+              <PropertyRef Name="UserId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -425,7 +427,7 @@
               <PropertyRef Name="PostId" />
             </Principal>
             <Dependent Role="Comment">
-              <PropertyRef Name="PostID" />
+              <PropertyRef Name="PostId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -543,6 +545,7 @@
               <MappingFragment StoreEntitySet="Category">
                 <ScalarProperty Name="CategoryId" ColumnName="CategoryId" />
                 <ScalarProperty Name="CategoryName" ColumnName="CategoryName" />
+                <ScalarProperty Name="IsChecked" ColumnName="IsChecked" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -552,8 +555,8 @@
                 <ScalarProperty Name="CommentId" ColumnName="CommentId" />
                 <ScalarProperty Name="CommentContext" ColumnName="CommentContext" />
                 <ScalarProperty Name="CommentDate" ColumnName="CommentDate" />
-                <ScalarProperty Name="UserID" ColumnName="UserID" />
-                <ScalarProperty Name="PostID" ColumnName="PostID" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="PostId" ColumnName="PostId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -564,7 +567,7 @@
                 <ScalarProperty Name="PostTitle" ColumnName="PostTitle" />
                 <ScalarProperty Name="PostDate" ColumnName="PostDate" />
                 <ScalarProperty Name="PostContext" ColumnName="PostContext" />
-                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
