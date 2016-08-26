@@ -8,19 +8,12 @@ namespace BlogSite_v1.Models
 {
     public class PostCategoryView : DbContext
     {
-        public List<Category> Categories { get; set; }
         public List<Post> Posts { get; set; }
+        public List<Category> Categories { get; set; }
         public List<PostCategory> PostCategories { get; set; }
 
         public virtual Post Post { get; set; }
         public virtual Category Category { get; set; }
         public virtual PostCategory PostCategory { get; set; }
-
-        
-        
-
-
-        
-
     }
 }

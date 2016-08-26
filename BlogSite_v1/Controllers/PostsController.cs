@@ -109,5 +109,54 @@ namespace BlogSite_v1.Controllers
 
             return View(postcc);
         }
+
+
+
+        public ActionResult DeletePost(int? id)
+        {
+            if (id == null)
+            {
+                //
+            }
+            Post post = db.Post.Find(id);
+            if (post == null)
+            {
+                //
+            }
+            return View(post);
+        }
+
+        // POST: x/Delete/5
+        [HttpPost, ActionName("DeletePost")]
+        [ValidateAntiForgeryToken]
+        public ActionResult DeleteConfirmed(int id)
+        {
+            var deletePC = new List<PostCategory>();
+            var deleteComment = new List<Comment>(); 
+
+            Post post = db.Post.Find(id);
+
+
+            deletePC = db.PostCategory.Where(x => x.PostId == post.PostId).ToList();
+            deleteComment = db.Comment.Where(x => x.PostId == post.PostId).ToList();
+
+            foreach(var cat in deletePC)
+            {
+                db.PostCategory.Remove(cat);
+            }
+
+            foreach (var com in deleteComment)
+            {
+                db.Comment.Remove(com);
+            }
+
+
+
+
+            db.Post.Remove(post);
+            db.SaveChanges();
+            return RedirectToAction("Index");
+        }
+
     }
 }

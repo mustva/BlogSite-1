@@ -52,8 +52,10 @@
                 
             </td>
             <td>
-                @Html.ActionLink("Edit", "Edit", new { id = item.PostId }) |
-                @Html.ActionLink("Details", "Details", new { id = item.PostId }) |
+                @Html.ActionLink("Edit Post", "Edit", new { id = item.PostId }) |
+                @Html.ActionLink("Post Details", "Details", new { id = item.PostId }) |
+                @Html.ActionLink("Delete Post", "DeletePost", new { id = item.PostId }) 
+
             </td>
         </tr>
     }
