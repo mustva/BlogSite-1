@@ -25,16 +25,28 @@ namespace BlogSite_v1.Controllers
             return View(pcc);
         }
 
+        
+
         public ActionResult Details(int? id)
         {
-            Post post = new Post();
-            post = db.Post.Find(id);
+
+            PostCommentView postCommentView = new PostCommentView();
+            
+            //Post post = new Post();
+
+            postCommentView.Post = db.Post.Find(id);
+
+            //post = db.Post.Find(id);
 
             var comments = from x in db.Comment
-                           where (x.PostId == post.PostId)
+                           where (x.PostId == postCommentView.Post.PostId)
                            select x;
 
-            post.Comment = comments.ToList();
+            postCommentView.Comments = comments.ToList();
+
+           
+
+            //post.Comment = comments.ToList();
 
 
 
@@ -43,16 +55,18 @@ namespace BlogSite_v1.Controllers
                 //
             }
 
-            if (post == null)
+            if (postCommentView == null)
             {
                 //
             }
-            return View(post);
+
+            
+            return View(postCommentView);
         }
 
 
 
-        Post post = new Post();
+        
         PostCategory postCategory = new PostCategory();
         PostCategoryView pc = new PostCategoryView();
 
@@ -74,12 +88,13 @@ namespace BlogSite_v1.Controllers
             if (ModelState.IsValid)
             {
 
-
+                Post post = new Post();
                 post.UserId = Convert.ToInt32(User.Identity.GetUserId());
                 post.PostDate = DateTime.Now.Date;
                 post.PostTitle = postcc.Post.PostTitle;
                 post.PostContext = postcc.Post.PostContext;
                 db.Post.Add(post);
+                
 
 
                 var checkedCat = from x in postcc.Categories
@@ -112,6 +127,46 @@ namespace BlogSite_v1.Controllers
 
 
 
+
+        
+        public ActionResult AddComment()
+        {
+
+            Comment comment = new Comment();
+            
+            return View(comment);
+        }
+
+
+
+
+
+
+        
+        [HttpPost]
+        public ActionResult AddComment(Comment com, int id)
+        {
+
+            Comment comment = new Comment();
+
+            if (ModelState.IsValid)
+            {
+                comment.PostId = db.Post.Find(id).PostId;
+                comment.CommentContext = com.CommentContext;
+                comment.CommentDate = DateTime.Now.Date;
+                comment.UserId = Convert.ToInt32(User.Identity.GetUserId());
+
+                db.Comment.Add(comment);
+                db.SaveChanges();
+                
+            }
+            return RedirectToAction("Details", new { id = comment.PostId });
+        }
+
+
+
+
+
         public ActionResult DeletePost(int? id)
         {
             if (id == null)
@@ -132,7 +187,7 @@ namespace BlogSite_v1.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             var deletePC = new List<PostCategory>();
-            var deleteComment = new List<Comment>(); 
+            var deleteComment = new List<Comment>();
 
             Post post = db.Post.Find(id);
 
@@ -140,7 +195,7 @@ namespace BlogSite_v1.Controllers
             deletePC = db.PostCategory.Where(x => x.PostId == post.PostId).ToList();
             deleteComment = db.Comment.Where(x => x.PostId == post.PostId).ToList();
 
-            foreach(var cat in deletePC)
+            foreach (var cat in deletePC)
             {
                 db.PostCategory.Remove(cat);
             }

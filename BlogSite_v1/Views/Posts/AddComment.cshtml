@@ -1,0 +1,41 @@
+﻿@model BlogSite_v1.Models.Comment
+
+
+@{
+    ViewBag.Title = "AddComment";
+}
+
+<h2>AddComment</h2>
+
+@using (Html.BeginForm()) 
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <h4>Comment</h4>
+        <hr />
+
+
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.LabelFor(model => model.CommentContext)
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.CommentContext)
+                @Html.ValidationMessageFor(model => model.CommentContext)
+            </div>
+        </div>
+
+        
+
+        
+
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Send Comment" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+

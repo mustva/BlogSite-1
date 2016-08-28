@@ -21,9 +21,6 @@
             Post Date
         </th>
         <th>
-            Post Context
-        </th>
-        <th>
             Category
         </th>
         <th></th>
@@ -33,14 +30,12 @@
     {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.PostTitle)
+                @Html.ActionLink(@Html.DisplayFor(modelItem => item.PostTitle).ToString(), "Details", new { id = item.PostId }) 
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.PostDate)
             </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PostContext)
-            </td>
+            
             <td>
                 @foreach(var cat in Model.PostCategories)
                 {
@@ -53,7 +48,6 @@
             </td>
             <td>
                 @Html.ActionLink("Edit Post", "Edit", new { id = item.PostId }) |
-                @Html.ActionLink("Post Details", "Details", new { id = item.PostId }) |
                 @Html.ActionLink("Delete Post", "DeletePost", new { id = item.PostId }) 
 
             </td>

@@ -1,20 +1,24 @@
-﻿@model BlogSite_v1.Models.Post
+﻿@model BlogSite_v1.Models.PostCommentView
 @{
     ViewBag.Title = "Details";
+    
+   
 }
 
 <h2>Details</h2>
 
 <div>
-    
+
     <hr />
     <dl class="dl-horizontal">
+
+
         <dt>
-            Details of Post:  
+            Post Title:
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.PostTitle)
+            @Html.DisplayFor(model => model.Post.PostTitle)
         </dd>
 
 
@@ -24,11 +28,19 @@
         </dt>
     </dl>
     <div>
+
+        <h4> Context </h4> @Html.DisplayFor(model => model.Post.PostContext)
+        <br /><br />
         <h4>Comments</h4>
+       
+        
+        @Html.ActionLink("Add Comment", "AddComment", new {com = Model.Comment, id = Model.Post.PostId });
+
         <dl>
-            @foreach (var cat in Model.Comment)
+
+            @foreach (var cat in Model.Comments)
             {
-                
+
                 <dt>
                     @cat.AspNetUsers.UserName:
                 </dt>
@@ -38,7 +50,8 @@
                 <dd>
                     @cat.CommentDate
                 </dd>
-            <br />
+                <br />
+
             }
             @Html.ActionLink("Go Back to Posts", "Index")
         </dl>
