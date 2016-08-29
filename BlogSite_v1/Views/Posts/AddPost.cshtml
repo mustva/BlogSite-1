@@ -2,14 +2,10 @@
 
 
 @{
-    ViewBag.Title = "Create";
-    
-
-
-
+    ViewBag.Title = "Add New Post";
 }
 
-<h2>Create</h2>
+<center><h2>New Post</h2></center>
 
 
 @using (Html.BeginForm())
@@ -17,53 +13,49 @@
     @Html.AntiForgeryToken()
 
     <div class="form-horizontal">
-        <h4>Post</h4>
+
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.Post.PostTitle)
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Post.PostTitle)
+         @Html.ActionLink("Back to List", "Index", null, new { @class = "btn-primary btn-sm" })<br /><br />
+        
+            
+            <div align="center">
+                <div class="well well-sm" style="background-color:seagreen"><b>Title</b></div>
+                @Html.TextAreaFor(model => model.Post.PostTitle, new { style = "width:500px;height:25px;resize: none" })<br /> Max. 50 characters.
                 @Html.ValidationMessageFor(model => model.Post.PostTitle)
             </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.Post.PostContext)
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Post.PostContext)
-                @Html.ValidationMessageFor(model => model.Post.PostContext)
-            </div>
-        </div>
+            <br />
 
         
-
-        @for(var i=0; i < Model.Categories.Count(); i++)
-        {
-            @Html.HiddenFor(x=> x.Categories[i].CategoryId)
-            @Html.CheckBoxFor(x => x.Categories[i].IsChecked)
-            @Html.DisplayFor(x=> x.Categories[i].CategoryName)
-            <br />
-        }
-
-     
-
-       
-       
-       
-
-
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Create" class="btn btn-default" />
+            <div align="center">
+                <div class="well well-sm" style="background-color:seagreen"><b>Post</b></div>
+                @Html.TextAreaFor(model => model.Post.PostContext, new { rows = 5, cols = 50, maxwidth = 500, style = "width: 1500px; height:300px;resize: none" })
+                @Html.ValidationMessageFor(model => model.Post.PostContext)
             </div>
+        
+
+        <hr />
+        <div align="center">
+        <div class="well well-sm" style="background-color:seagreen"><b>Select Category/ies for Post</b></div>
+            @for (var i = 0; i < Model.Categories.Count(); i++)
+            {
+                @Html.HiddenFor(x => x.Categories[i].CategoryId)
+                @Html.CheckBoxFor(x => x.Categories[i].IsChecked)
+                @Html.DisplayFor(x => x.Categories[i].CategoryName)
+                <br />
+            }
         </div>
+       
+           
+        <center><input type="submit" value="Post" class="btn btn-warning" /></center><hr />
+           
+        
     </div>
 }
 
-<div>
-    @Html.ActionLink("Back to List", "Index")
-</div>
+
+   
+
 
 

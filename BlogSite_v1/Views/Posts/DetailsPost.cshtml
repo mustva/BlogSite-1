@@ -1,61 +1,57 @@
 ﻿@model BlogSite_v1.Models.PostCommentView
 @{
     ViewBag.Title = "Details";
-    
-   
+
+
 }
 
-<h2>Details</h2>
+<center><h2>@Html.DisplayFor(model => model.Post.PostTitle)</h2></center>
+
 
 <div>
 
     <hr />
-    <dl class="dl-horizontal">
-
-
-        <dt>
-            Post Title:
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Post.PostTitle)
-        </dd>
-
-
-
-        <dt>
-
-        </dt>
-    </dl>
+    @Html.ActionLink("Back to Posts", "Index", null, new { @class = "btn-primary btn-sm" })
+    <dl class="dl-horizontal"></dl>
     <div>
 
-        <h4> Context </h4> @Html.DisplayFor(model => model.Post.PostContext)
+        @Html.DisplayFor(model => model.Post.PostContext)
+        <br /><hr />
+
+
+        <center><h5>Comments<span class="badge">@Model.Comments.Count()</span></h5></center>
+        @Html.ActionLink("Add Comment", "AddComment", new { com = Model.Comment, id = Model.Post.PostId }, new { @class = "btn btn-warning btn-sm" })
         <br /><br />
-        <h4>Comments</h4>
-       
+
         
-        @Html.ActionLink("Add Comment", "AddComment", new {com = Model.Comment, id = Model.Post.PostId });
+        @if(Model.Comments.Count() == 0)
+        {
+        <div class="well well-sm"><center>No comment for this post! Be the first!</center></div>
+        }
+        
+        @foreach (var cat in Model.Comments)
+        {
+            
 
-        <dl>
-
-            @foreach (var cat in Model.Comments)
-            {
-
-                <dt>
-                    @cat.AspNetUsers.UserName:
-                </dt>
-                <dd>
+            <div class="panel panel-default">
+                
+                <div class="panel-heading">@cat.AspNetUsers.UserName on @cat.CommentDate.Date</div>
+                <div class="panel-body">
                     @cat.CommentContext
-                </dd>
-                <dd>
-                    @cat.CommentDate
-                </dd>
-                @Html.ActionLink("Delete Comment", "DeleteComment", new { id = cat.CommentId })
-                <br />
+                    <div align="right">
+                        @Html.ActionLink("Delete Comment", "DeleteComment", new { id = cat.CommentId }, new { @class = "btn btn-danger btn-xs" })
+                    </div>
+                </div>
+            </div>
 
-            }
-            @Html.ActionLink("Go Back to Posts", "Index")
-        </dl>
+
+            <hr />
+        }
+
+
+
+
+
     </div>
 </div>
 

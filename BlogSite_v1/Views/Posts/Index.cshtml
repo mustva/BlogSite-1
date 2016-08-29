@@ -1,57 +1,48 @@
 ﻿@model BlogSite_v1.Models.PostCategoryView
 
-
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Blog Posts";
+
 }
 
-<h2>Index</h2>
-
-
+<center><h2>Blog Posts</h2></center>
 
 <p>
-    @Html.ActionLink("New Post", "AddPost")
+    @Html.ActionLink("Add New Post", "AddPost", null, new { @class = "btn btn-warning btn-sm" })
 </p>
-<table class="table">
-    <tr>
-        <th>
-            Post
-        </th>
-        <th>
-            Post Date
-        </th>
-        <th>
-            Category
-        </th>
-        <th></th>
-    </tr>
+
+
 
     @foreach (var item in Model.Posts)
     {
-        <tr>
-            <td>
-                @Html.ActionLink(@Html.DisplayFor(modelItem => item.PostTitle).ToString(), "DetailsPost", new { id = item.PostId }) 
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PostDate)
-            </td>
-            
-            <td>
-                @foreach(var cat in Model.PostCategories)
-                {
-                    if(cat.PostId == item.PostId)
-                    {
-                        @cat.Category.CategoryName; <br />
-                    }
-                }
-                
-            </td>
-            <td>
-                @Html.ActionLink("Edit Post", "Edit", new { id = item.PostId }) |
-                @Html.ActionLink("Delete Post", "DeletePost", new { id = item.PostId }) 
 
-            </td>
-        </tr>
+        <div style="margin-left:auto;margin-right:auto">
+            <div align="right">
+                @Html.ActionLink("Edit Post", "Edit", new { id = item.PostId }, new { @class = "btn btn-success btn-xs" }) |
+                @Html.ActionLink("Delete Post", "DeletePost", new { id = item.PostId }, new { @class = "btn btn-danger btn-xs" })
+            </div>
+            <div class="panel panel-success small">
+                <div class="panel-heading well-sm">@Html.ActionLink(@Html.DisplayFor(modelItem => item.PostTitle).ToString(), "DetailsPost", new { id = item.PostId })
+                 <br /> Date: @Html.DisplayFor(modelItem => item.PostDate)</div>
+                <div class="panel-body well-sm">
+                    @foreach (var cat in Model.PostCategories)
+                    {
+                        if (cat.PostId == item.PostId)
+                        {
+                            <kbd>@cat.Category.CategoryName</kbd>
+                            <br />
+                        }
+                    }
+                    
+                </div>
+            </div>
+                 
+
+        
+
+      </div>
+
     }
 
-    </table>
+
+       
