@@ -14,7 +14,7 @@ namespace BlogSite_v1.Controllers
     {
         BlogSiteEntities db = new BlogSiteEntities();
 
-        // GET: Post
+
         public ActionResult Index()
         {
             PostCategoryView pcc = new PostCategoryView();
@@ -25,30 +25,20 @@ namespace BlogSite_v1.Controllers
             return View(pcc);
         }
 
-        
-
-        public ActionResult Details(int? id)
+        #region Details of Posts
+        public ActionResult DetailsPost(int? id)
         {
 
             PostCommentView postCommentView = new PostCommentView();
-            
-            //Post post = new Post();
 
             postCommentView.Post = db.Post.Find(id);
 
-            //post = db.Post.Find(id);
 
             var comments = from x in db.Comment
                            where (x.PostId == postCommentView.Post.PostId)
                            select x;
 
             postCommentView.Comments = comments.ToList();
-
-           
-
-            //post.Comment = comments.ToList();
-
-
 
             if (id == null)
             {
@@ -60,31 +50,25 @@ namespace BlogSite_v1.Controllers
                 //
             }
 
-            
+
             return View(postCommentView);
         }
-
-
-
-        
-        PostCategory postCategory = new PostCategory();
-        PostCategoryView pc = new PostCategoryView();
-
-        public ActionResult CreatePost()
+        #endregion
+        #region Add Post
+        public ActionResult AddPost()
         {
+            PostCategoryView pc = new PostCategoryView();
             pc.Categories = db.Category.ToList();
 
             return View(pc);
         }
 
 
-
-
-
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult CreatePost(PostCategoryView postcc)
+        public ActionResult AddPost(PostCategoryView postcc)
         {
+            PostCategory postCategory = new PostCategory();
             if (ModelState.IsValid)
             {
 
@@ -94,7 +78,7 @@ namespace BlogSite_v1.Controllers
                 post.PostTitle = postcc.Post.PostTitle;
                 post.PostContext = postcc.Post.PostContext;
                 db.Post.Add(post);
-                
+
 
 
                 var checkedCat = from x in postcc.Categories
@@ -124,49 +108,8 @@ namespace BlogSite_v1.Controllers
 
             return View(postcc);
         }
-
-
-
-
-        
-        public ActionResult AddComment()
-        {
-
-            Comment comment = new Comment();
-            
-            return View(comment);
-        }
-
-
-
-
-
-
-        
-        [HttpPost]
-        public ActionResult AddComment(Comment com, int id)
-        {
-
-            Comment comment = new Comment();
-
-            if (ModelState.IsValid)
-            {
-                comment.PostId = db.Post.Find(id).PostId;
-                comment.CommentContext = com.CommentContext;
-                comment.CommentDate = DateTime.Now.Date;
-                comment.UserId = Convert.ToInt32(User.Identity.GetUserId());
-
-                db.Comment.Add(comment);
-                db.SaveChanges();
-                
-            }
-            return RedirectToAction("Details", new { id = comment.PostId });
-        }
-
-
-
-
-
+        #endregion
+        #region Delete Post
         public ActionResult DeletePost(int? id)
         {
             if (id == null)
@@ -181,7 +124,7 @@ namespace BlogSite_v1.Controllers
             return View(post);
         }
 
-        // POST: x/Delete/5
+
         [HttpPost, ActionName("DeletePost")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
@@ -205,13 +148,69 @@ namespace BlogSite_v1.Controllers
                 db.Comment.Remove(com);
             }
 
-
-
-
             db.Post.Remove(post);
             db.SaveChanges();
             return RedirectToAction("Index");
         }
 
+        #endregion
+        #region Add Comment
+        public ActionResult AddComment()
+        {
+
+            Comment comment = new Comment();
+
+            return View(comment);
+        }
+
+        [HttpPost]
+        public ActionResult AddComment(Comment com, int id)
+        {
+
+            Comment comment = new Comment();
+
+            if (ModelState.IsValid)
+            {
+                comment.PostId = db.Post.Find(id).PostId;
+                comment.CommentContext = com.CommentContext;
+                comment.CommentDate = DateTime.Now.Date;
+                comment.UserId = Convert.ToInt32(User.Identity.GetUserId());
+
+                db.Comment.Add(comment);
+                db.SaveChanges();
+
+            }
+            return RedirectToAction("DetailsPost", new { id = comment.PostId });
+        }
+        #endregion
+        #region Delete Comment
+        public ActionResult DeleteComment(int? id)
+        {
+            if (id == null)
+            {
+                //
+            }
+            Comment comment = db.Comment.Find(id);
+            if (comment == null)
+            {
+                //
+            }
+            return View(comment);
+        }
+
+        [HttpPost, ActionName("DeleteComment")]
+        [ValidateAntiForgeryToken]
+        public ActionResult DeleteComment(int id)
+        {
+
+            var deleteComment = new Comment();
+            deleteComment = db.Comment.Find(id);
+
+
+            db.Comment.Remove(deleteComment);
+            db.SaveChanges();
+            return RedirectToAction("DetailsPost", new { id = deleteComment.PostId } );
+        }
+        #endregion
     }
 }

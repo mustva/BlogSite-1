@@ -10,7 +10,7 @@
 
 
 <p>
-    @Html.ActionLink("Create New", "CreatePost")
+    @Html.ActionLink("New Post", "AddPost")
 </p>
 <table class="table">
     <tr>
@@ -30,7 +30,7 @@
     {
         <tr>
             <td>
-                @Html.ActionLink(@Html.DisplayFor(modelItem => item.PostTitle).ToString(), "Details", new { id = item.PostId }) 
+                @Html.ActionLink(@Html.DisplayFor(modelItem => item.PostTitle).ToString(), "DetailsPost", new { id = item.PostId }) 
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.PostDate)

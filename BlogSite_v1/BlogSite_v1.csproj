@@ -296,11 +296,12 @@
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\Posts\Index.cshtml" />
-    <Content Include="Views\Posts\Edit.cshtml" />
-    <Content Include="Views\Posts\Details.cshtml" />
-    <Content Include="Views\Posts\CreatePost.cshtml" />
+    <Content Include="Views\Posts\EditPost.cshtml" />
+    <Content Include="Views\Posts\DetailsPost.cshtml" />
+    <Content Include="Views\Posts\AddPost.cshtml" />
     <Content Include="Views\Posts\DeletePost.cshtml" />
     <Content Include="Views\Posts\AddComment.cshtml" />
+    <Content Include="Views\Posts\DeleteComment.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

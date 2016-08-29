@@ -50,6 +50,7 @@
                 <dd>
                     @cat.CommentDate
                 </dd>
+                @Html.ActionLink("Delete Comment", "DeleteComment", new { id = cat.CommentId })
                 <br />
 
             }

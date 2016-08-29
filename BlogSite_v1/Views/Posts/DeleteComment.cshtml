@@ -1,0 +1,48 @@
+﻿@model BlogSite_v1.Models.Comment
+
+@{
+    ViewBag.Title = "DeleteComment";
+}
+
+<h2>DeleteComment</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>Comment</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            Comment
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CommentContext)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.AspNetUsers.Email)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.AspNetUsers.Email)
+        </dd>
+
+        <dt>
+            On post:
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Post.PostTitle)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" /> |
+            @Html.ActionLink("Back to List", "DetailsPost", new { id = Model.PostId })
+        </div>
+    }
+</div>
