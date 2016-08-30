@@ -23,18 +23,17 @@
         @Html.ActionLink("Add Comment", "AddComment", new { com = Model.Comment, id = Model.Post.PostId }, new { @class = "btn btn-warning btn-sm" })
         <br /><br />
 
-        
-        @if(Model.Comments.Count() == 0)
+
+        @if (Model.Comments.Count() == 0)
         {
-        <div class="well well-sm"><center>No comment for this post! Be the first!</center></div>
+            <div class="well well-sm"><center>No comment for this post! Be the first!</center></div>
         }
-        
+
         @foreach (var cat in Model.Comments)
         {
-            
+
 
             <div class="panel panel-default">
-                
                 <div class="panel-heading">@cat.AspNetUsers.UserName on @cat.CommentDate.Date</div>
                 <div class="panel-body">
                     @cat.CommentContext
@@ -43,15 +42,8 @@
                     </div>
                 </div>
             </div>
-
-
             <hr />
         }
-
-
-
-
-
     </div>
 </div>
 

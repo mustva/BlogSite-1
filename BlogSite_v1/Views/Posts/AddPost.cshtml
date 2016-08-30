@@ -38,16 +38,18 @@
         <hr />
         <div align="center">
         <div class="well well-sm" style="background-color:seagreen"><b>Select Category/ies for Post</b></div>
-            @for (var i = 0; i < Model.Categories.Count(); i++)
+            
+                @for (var i = 0; i < Model.Categories.Count(); i++)
             {
                 @Html.HiddenFor(x => x.Categories[i].CategoryId)
                 @Html.CheckBoxFor(x => x.Categories[i].IsChecked)
                 @Html.DisplayFor(x => x.Categories[i].CategoryName)
-                <br />
+                <br /> 
             }
+        
         </div>
        
-           
+        <br />
         <center><input type="submit" value="Post" class="btn btn-warning" /></center><hr />
            
         

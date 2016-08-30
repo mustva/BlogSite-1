@@ -92,6 +92,14 @@ namespace BlogSite_v1.Controllers
         // GET: Categories/Delete/5
         public ActionResult Delete(int? id)
         {
+            List<Post> postList = new List<Post>();
+            postList = (from x in db.PostCategory
+                        where (x.CategoryId == id)
+                        select x.Post).ToList();
+
+            ViewBag.postsCounter = postList.Count();
+            
+
             if (id == null)
             {
                 //
@@ -110,8 +118,22 @@ namespace BlogSite_v1.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             Category category = db.Category.Find(id);
+            List<Post> postList = new List<Post>();
+
+            postList = (from x in db.PostCategory
+                       where (x.CategoryId == id)
+                       select x.Post).ToList();
+
+            
+            if (postList.Count() != 0)
+            {
+                // Hata, Silemem!
+            }
+
+            else { 
             db.Category.Remove(category);
             db.SaveChanges();
+            }
             return RedirectToAction("Index");
         }
 
