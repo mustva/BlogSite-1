@@ -37,14 +37,15 @@
                 <div class="panel-heading">@cat.AspNetUsers.UserName on @cat.CommentDate.Date</div>
                 <div class="panel-body">
                     @cat.CommentContext
-                    <div align="right">
-                        @Html.ActionLink("Delete Comment", "DeleteComment", new { id = cat.CommentId }, new { @class = "btn btn-danger btn-xs" })
-                    </div>
+                    @if (Request.IsAuthenticated && User.IsInRole("Admin"))
+                    {
+                        <div align="right">
+                            @Html.ActionLink("Delete Comment", "DeleteComment", new { id = cat.CommentId }, new { @class = "btn btn-danger btn-xs" })
+                        </div>
+                    }
                 </div>
             </div>
             <hr />
         }
     </div>
 </div>
-
-

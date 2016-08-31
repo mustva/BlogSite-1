@@ -10,132 +10,113 @@ using BlogSite_v1.Models;
 
 namespace BlogSite_v1.Controllers
 {
-
-    [Authorize(Roles = "Admin")]
-    public class CategoriesController : Controller
+    public class xController : Controller
     {
         private BlogSiteEntities db = new BlogSiteEntities();
 
-        
+        // GET: x
         public ActionResult Index()
         {
-            return View(db.Category.ToList());
+            var post = db.Post.Include(p => p.AspNetUsers);
+            return View(post.ToList());
         }
 
-        
+        // GET: x/Details/5
         public ActionResult Details(int? id)
         {
             if (id == null)
             {
-                //
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Category category = db.Category.Find(id);
-            if (category == null)
+            Post post = db.Post.Find(id);
+            if (post == null)
             {
-                //
+                return HttpNotFound();
             }
-            return View(category);
+            return View(post);
         }
 
-        
+        // GET: x/Create
         public ActionResult Create()
         {
+            ViewBag.UserId = new SelectList(db.AspNetUsers, "Id", "Email");
             return View();
         }
 
-        // POST: Categories/Create
+        // POST: x/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "CategoryId,CategoryName,IsChecked")] Category category)
+        public ActionResult Create([Bind(Include = "PostId,PostTitle,PostDate,PostContext,UserId")] Post post)
         {
             if (ModelState.IsValid)
             {
-                db.Category.Add(category);
+                db.Post.Add(post);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            return View(category);
+            ViewBag.UserId = new SelectList(db.AspNetUsers, "Id", "Email", post.UserId);
+            return View(post);
         }
 
-        // GET: Categories/Edit/5
+        // GET: x/Edit/5
         public ActionResult Edit(int? id)
         {
             if (id == null)
             {
-                //
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Category category = db.Category.Find(id);
-            if (category == null)
+            Post post = db.Post.Find(id);
+            if (post == null)
             {
-                //
+                return HttpNotFound();
             }
-            return View(category);
+            ViewBag.UserId = new SelectList(db.AspNetUsers, "Id", "Email", post.UserId);
+            return View(post);
         }
 
-        // POST: Categories/Edit/5
+        // POST: x/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "CategoryId,CategoryName,IsChecked")] Category category)
+        public ActionResult Edit([Bind(Include = "PostId,PostTitle,PostDate,PostContext,UserId")] Post post)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(category).State = EntityState.Modified;
+                db.Entry(post).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            return View(category);
+            ViewBag.UserId = new SelectList(db.AspNetUsers, "Id", "Email", post.UserId);
+            return View(post);
         }
 
-        // GET: Categories/Delete/5
+        // GET: x/Delete/5
         public ActionResult Delete(int? id)
         {
-            List<Post> postList = new List<Post>();
-            postList = (from x in db.PostCategory
-                        where (x.CategoryId == id)
-                        select x.Post).ToList();
-
-            ViewBag.postsCounter = postList.Count();
-            
-
             if (id == null)
             {
-                //
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Category category = db.Category.Find(id);
-            if (category == null)
+            Post post = db.Post.Find(id);
+            if (post == null)
             {
-                //
+                return HttpNotFound();
             }
-            return View(category);
+            return View(post);
         }
 
-        // POST: Categories/Delete/5
+        // POST: x/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Category category = db.Category.Find(id);
-            List<Post> postList = new List<Post>();
-
-            postList = (from x in db.PostCategory
-                       where (x.CategoryId == id)
-                       select x.Post).ToList();
-
-            
-            if (postList.Count() != 0)
-            {
-                // Hata, Silemem!
-            }
-
-            else { 
-            db.Category.Remove(category);
+            Post post = db.Post.Find(id);
+            db.Post.Remove(post);
             db.SaveChanges();
-            }
             return RedirectToAction("Index");
         }
 

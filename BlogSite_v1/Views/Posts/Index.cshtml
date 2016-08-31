@@ -7,43 +7,55 @@
 
 <center><h2>Blog Posts</h2></center>
 
+@if (Request.IsAuthenticated && User.IsInRole("Admin"))
+{
 <p>
     @Html.ActionLink("Add New Post", "AddPost", null, new { @class = "btn btn-warning btn-sm" })
 </p>
+}
 
 
+@foreach (var item in Model.Posts)
+{
 
-    @foreach (var item in Model.Posts)
-    {
+    <div style="margin-left:auto;margin-right:auto">
+        <div align="right">
+                        
+            @if (Request.IsAuthenticated && User.IsInRole("Admin"))
+            {
+            @Html.ActionLink("Edit Post", "EditPost", new { id = item.PostId }, new { @class = "btn btn-success btn-xs" });
+                @: | 
+            @Html.ActionLink("Delete Post", "DeletePost", new { id = item.PostId }, new { @class = "btn btn-danger btn-xs" });
+            }
 
-        <div style="margin-left:auto;margin-right:auto">
-            <div align="right">
-                @Html.ActionLink("Edit Post", "Edit", new { id = item.PostId }, new { @class = "btn btn-success btn-xs" }) |
-                @Html.ActionLink("Delete Post", "DeletePost", new { id = item.PostId }, new { @class = "btn btn-danger btn-xs" })
+        </div>
+        <div class="panel panel-success small">
+            <div class="panel-heading well-sm">
+                @Html.ActionLink(@Html.DisplayFor(modelItem => item.PostTitle).ToString(), "DetailsPost", new { id = item.PostId })
+                <br /> Date: @Html.DisplayFor(modelItem => item.PostDate.Day)
+                / @Html.DisplayFor(modelItem => item.PostDate.Month)
+                / @Html.DisplayFor(modelItem => item.PostDate.Year) 
+                - @Html.DisplayFor(modelItem => item.PostDate.DayOfWeek)
             </div>
-            <div class="panel panel-success small">
-                <div class="panel-heading well-sm">@Html.ActionLink(@Html.DisplayFor(modelItem => item.PostTitle).ToString(), "DetailsPost", new { id = item.PostId })
-                 <br /> Date: @Html.DisplayFor(modelItem => item.PostDate)</div>
-                <div class="panel-body well-sm">
-                    @foreach (var cat in Model.PostCategories)
+            <div class="panel-body well-sm">
+                @foreach (var cat in Model.PostCategories)
+                {
+                    if (cat.PostId == item.PostId)
                     {
-                        if (cat.PostId == item.PostId)
-                        {
-                            <kbd>@cat.Category.CategoryName</kbd>
-                            ;
+                        <kbd>@cat.Category.CategoryName</kbd>
+                        ;
 
-                        }
                     }
-                    
-                </div>
+                }
+
             </div>
-                 
-
-        
-
-      </div>
-
-    }
+        </div>
 
 
-       
+
+
+    </div>
+
+}
+
+

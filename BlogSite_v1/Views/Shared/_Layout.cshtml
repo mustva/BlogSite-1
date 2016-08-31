@@ -37,10 +37,15 @@
 
                             <li>@Html.ActionLink("Posts", "Index", "Posts")</li>
                             <br />
-                            <li>@Html.ActionLink("Categories", "Index", "Categories")</li>
-                            <br />
-                            <li>@Html.ActionLink("Users", "Index", "Posts")</li>
-                            <br />
+
+                            @if (Request.IsAuthenticated && User.IsInRole("Admin"))
+                            {
+                                
+                                <li>@Html.ActionLink("Categories", "Index", "Categories")</li>
+                                <br />
+                                <li>@Html.ActionLink("Users", "Index", "Posts")</li>
+                                <br />
+                            }
                         </ul>
 
                     </div>

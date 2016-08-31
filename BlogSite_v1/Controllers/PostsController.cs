@@ -7,6 +7,7 @@ using BlogSite_v1.Models;
 using System.Data.Entity;
 using Microsoft.AspNet.Identity;
 using System.Threading.Tasks;
+using System.Net;
 
 namespace BlogSite_v1.Controllers
 {
@@ -20,11 +21,47 @@ namespace BlogSite_v1.Controllers
             PostCategoryView pcc = new PostCategoryView();
 
             pcc.Categories = db.Category.ToList();
-            pcc.Posts = db.Post.ToList();
+            pcc.Posts = db.Post.OrderByDescending(x=> x.PostDate).ToList();
             pcc.PostCategories = db.PostCategory.ToList();
             return View(pcc);
         }
 
+
+        [Authorize(Roles = "Admin")]
+        #region Edit Post
+        // GET: x/Edit/5
+        public ActionResult EditPost(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Post post = db.Post.Find(id);
+            if (post == null)
+            {
+                return HttpNotFound();
+            }
+            ViewBag.UserId = new SelectList(db.AspNetUsers, "Id", "Email", post.UserId);
+            return View(post);
+        }
+
+        
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult EditPost([Bind(Include = "PostId,PostTitle,PostDate,PostContext,UserId")] Post post)
+        {
+            if (ModelState.IsValid)
+            {
+                db.Entry(post).State = EntityState.Modified;
+                db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            ViewBag.UserId = new SelectList(db.AspNetUsers, "Id", "Email", post.UserId);
+            return View(post);
+        }
+
+        #endregion
+        
         #region Details of Posts
         public ActionResult DetailsPost(int? id)
         {
@@ -42,18 +79,20 @@ namespace BlogSite_v1.Controllers
 
             if (id == null)
             {
-                //
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
             if (postCommentView == null)
             {
-                //
+                return HttpNotFound();
             }
 
 
             return View(postCommentView);
         }
         #endregion
+
+        [Authorize(Roles = "Admin")]
         #region Add Post
         public ActionResult AddPost()
         {
@@ -68,9 +107,44 @@ namespace BlogSite_v1.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult AddPost(PostCategoryView postcc)
         {
+            bool checkTitle = true, checkContext = true, checkCategory = true;
             PostCategory postCategory = new PostCategory();
             if (ModelState.IsValid)
             {
+
+
+                if (postcc.Post.PostTitle == null)
+                {
+                    ModelState.AddModelError("", "A post cannot be without a title!");
+                    checkTitle = false;                    
+                }
+                else
+                {
+                    checkTitle = true;
+                }
+
+                if (postcc.Post.PostContext == null)
+                {
+                    ModelState.AddModelError("", "A post cannot be without a content!");
+                    checkContext = false;
+                }
+                else
+                {
+                    checkContext = true;
+                }
+
+                if (postcc.Categories.All(x=> x.IsChecked == false))
+                {
+                    ModelState.AddModelError("", "A post cannot be without a category!");
+                    checkCategory = false;
+                }
+                else
+                {
+                    checkCategory = true;
+                }
+
+
+
 
                 Post post = new Post();
                 post.UserId = Convert.ToInt32(User.Identity.GetUserId());
@@ -85,15 +159,7 @@ namespace BlogSite_v1.Controllers
                                  where x.IsChecked == true
                                  select x;
 
-                if (checkedCat == null)
-                {
-#warning When the category is not selected, the post won't be saved. 
-#warning Kategori seçmeyince db.Save işlemiyor.
-                }
-
-
-                else
-                {
+                
                     foreach (var item in checkedCat)
                     {
 
@@ -101,25 +167,37 @@ namespace BlogSite_v1.Controllers
                         postCategory.PostId = post.PostId;
                         db.PostCategory.Add(postCategory);
                         db.SaveChanges();
+                        
                     }
+                    
+                
+
+                if(checkTitle && checkContext && checkCategory)
+                {
+                    return RedirectToAction("Index");
                 }
-                return RedirectToAction("Index");
+                
+
             }
 
+
+            postcc.Categories = db.Category.ToList();
             return View(postcc);
         }
         #endregion
+
+        [Authorize(Roles = "Admin")]
         #region Delete Post
         public ActionResult DeletePost(int? id)
         {
             if (id == null)
             {
-                //
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             Post post = db.Post.Find(id);
             if (post == null)
             {
-                //
+                return HttpNotFound();
             }
             return View(post);
         }
@@ -154,6 +232,7 @@ namespace BlogSite_v1.Controllers
         }
 
         #endregion
+
         #region Add Comment
         public ActionResult AddComment()
         {
@@ -183,17 +262,19 @@ namespace BlogSite_v1.Controllers
             return RedirectToAction("DetailsPost", new { id = comment.PostId });
         }
         #endregion
+
+        [Authorize(Roles = "Admin")]
         #region Delete Comment
         public ActionResult DeleteComment(int? id)
         {
             if (id == null)
             {
-                //
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             Comment comment = db.Comment.Find(id);
             if (comment == null)
             {
-                //
+                return HttpNotFound();
             }
             return View(comment);
         }
@@ -209,7 +290,7 @@ namespace BlogSite_v1.Controllers
 
             db.Comment.Remove(deleteComment);
             db.SaveChanges();
-            return RedirectToAction("DetailsPost", new { id = deleteComment.PostId } );
+            return RedirectToAction("DetailsPost", new { id = deleteComment.PostId });
         }
         #endregion
     }
