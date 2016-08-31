@@ -20,8 +20,12 @@
 
 
         <center><h5>Comments<span class="badge">@Model.Comments.Count()</span></h5></center>
-        @Html.ActionLink("Add Comment", "AddComment", new { com = Model.Comment, id = Model.Post.PostId }, new { @class = "btn btn-warning btn-sm" })
-        <br /><br />
+
+        @if (Request.IsAuthenticated && User.IsInRole("Admin") || User.IsInRole("User"))
+        {
+            @Html.ActionLink("Add Comment", "AddComment", new { com = Model.Comment, id = Model.Post.PostId }, new { @class = "btn btn-warning btn-sm" })
+            <br /><br />
+        }
 
 
         @if (Model.Comments.Count() == 0)
@@ -37,7 +41,7 @@
                 <div class="panel-heading">@cat.AspNetUsers.UserName on @cat.CommentDate.Date</div>
                 <div class="panel-body">
                     @cat.CommentContext
-                    @if (Request.IsAuthenticated && User.IsInRole("Admin"))
+                    @if (Request.IsAuthenticated && User.IsInRole("Admin") || (User.IsInRole("User") && cat.AspNetUsers.UserName == User.Identity.Name))
                     {
                         <div align="right">
                             @Html.ActionLink("Delete Comment", "DeleteComment", new { id = cat.CommentId }, new { @class = "btn btn-danger btn-xs" })

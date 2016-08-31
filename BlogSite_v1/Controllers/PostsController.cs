@@ -233,6 +233,7 @@ namespace BlogSite_v1.Controllers
 
         #endregion
 
+        [Authorize(Roles = "Admin, User")]
         #region Add Comment
         public ActionResult AddComment()
         {
@@ -263,7 +264,7 @@ namespace BlogSite_v1.Controllers
         }
         #endregion
 
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin, User")]
         #region Delete Comment
         public ActionResult DeleteComment(int? id)
         {
@@ -272,6 +273,7 @@ namespace BlogSite_v1.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             Comment comment = db.Comment.Find(id);
+            ViewBag.UserID = Convert.ToInt32(User.Identity.GetUserId());
             if (comment == null)
             {
                 return HttpNotFound();
@@ -284,12 +286,19 @@ namespace BlogSite_v1.Controllers
         public ActionResult DeleteComment(int id)
         {
 
+            
+
             var deleteComment = new Comment();
             deleteComment = db.Comment.Find(id);
+
+            if ((User.IsInRole("User") && deleteComment.UserId == Convert.ToInt32(User.Identity.GetUserId())) || User.IsInRole("Admin"))
+            {
 
 
             db.Comment.Remove(deleteComment);
             db.SaveChanges();
+            }
+
             return RedirectToAction("DetailsPost", new { id = deleteComment.PostId });
         }
         #endregion

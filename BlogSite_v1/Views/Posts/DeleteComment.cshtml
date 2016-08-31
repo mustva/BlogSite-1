@@ -1,28 +1,46 @@
 ﻿@model BlogSite_v1.Models.Comment
 
 @{
-    ViewBag.Title = "DeleteComment";
+    ViewBag.Title = "Delete Comment";
 }
 
-<h2>Are you sure you want to delete?</h2>
+@if (((User.IsInRole("User") && Model.UserId == ViewBag.UserID)) || User.IsInRole("Admin"))
+{
 
-<div>
+    <h2>Are you sure you want to delete?</h2>
 
-    <hr />
-    @Html.ActionLink("Back to List", "DetailsPost", new { id = Model.PostId }, new { @class = "btn-primary btn-sm" })
-    <br /> <br />
-    <b>Title</b> <div class="well well-sm">@Html.DisplayFor(model => model.Post.PostTitle)</div>
+    <div>
 
-    <b>User</b> <div class="well well-sm">@Html.DisplayFor(model => model.AspNetUsers.Email)</div>
+        <hr />
+        @Html.ActionLink("Back to List", "DetailsPost", new { id = Model.PostId }, new { @class = "btn-primary btn-sm" })
+        <br /> <br />
 
-    <b>Comment</b> <div class="well well-sm">@Html.DisplayFor(model => model.CommentContext)</div>
+        <b>Title</b> <div class="well well-sm">@Html.DisplayFor(model => model.Post.PostTitle)</div>
+
+        <b>User</b> <div class="well well-sm">@Html.DisplayFor(model => model.AspNetUsers.Email)</div>
+
+        <b>Comment</b> <div class="well well-sm">@Html.DisplayFor(model => model.CommentContext)</div>
 
 
-    @using (Html.BeginForm())
-    {
+        @using (Html.BeginForm())
+        {
         @Html.AntiForgeryToken()
 
         <center><input type="submit" value="Delete" class="btn btn-danger btn-block" /></center>
-    }
-   <hr /> 
-</div>
+        }
+
+        <hr />
+
+
+    </div>
+}
+else
+{
+    <hr />
+    @Html.ActionLink("Back to List", "DetailsPost", new { id = Model.PostId }, new { @class = "btn-primary btn-sm" })
+    <br /> <br />
+    <center><input type="submit" value="UNAUTHORIZED" class="btn btn-danger btn-block" /></center><hr />
+}
+
+
+
