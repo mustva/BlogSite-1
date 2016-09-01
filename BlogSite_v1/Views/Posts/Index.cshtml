@@ -7,12 +7,21 @@
 
 <center><h2>Blog Posts</h2></center>
 
+@using (Html.BeginForm()) { 
+<div align="right" class="well well-sm">
+    Filter by category: @Html.TextBox("searchCategory");
+    <input type="submit" value="Filter" />
+</div>
+}
+
 @if (Request.IsAuthenticated && User.IsInRole("Admin"))
 {
 <p>
     @Html.ActionLink("Add New Post", "AddPost", null, new { @class = "btn btn-warning btn-sm" })
 </p>
 }
+
+
 
 
 @foreach (var item in Model.Posts)
@@ -44,6 +53,7 @@
                     {
                         <kbd>@cat.Category.CategoryName</kbd>
                         ;
+                        
 
                     }
                 }

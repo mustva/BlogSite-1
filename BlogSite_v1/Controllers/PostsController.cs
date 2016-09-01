@@ -16,14 +16,30 @@ namespace BlogSite_v1.Controllers
         BlogSiteEntities db = new BlogSiteEntities();
 
 
-        public ActionResult Index()
+        public ActionResult Index(string searchCategory)
         {
+
             PostCategoryView pcc = new PostCategoryView();
 
-            pcc.Categories = db.Category.ToList();
-            pcc.Posts = db.Post.OrderByDescending(x=> x.PostDate).ToList();
+            var categories = from s in db.PostCategory
+                             where (s.Category.CategoryName.Contains(searchCategory))
+                             select s.Post;
+
+
+
+            pcc.Posts = db.Post.OrderByDescending(x => x.PostDate).ToList();
             pcc.PostCategories = db.PostCategory.ToList();
+            pcc.Categories = db.Category.ToList();
+
+            if (!String.IsNullOrEmpty(searchCategory))
+            {
+
+                pcc.Posts = categories.ToList();
+            }
+
             return View(pcc);
+
+
         }
 
 
@@ -34,7 +50,7 @@ namespace BlogSite_v1.Controllers
         {
             var pcv = new PostCategoryView();
 
-            
+
             Post post = db.Post.Find(id);
 
             pcv.Post = post;
@@ -50,8 +66,8 @@ namespace BlogSite_v1.Controllers
                 if (item.PostId == id)
                 {
                     var categories = from c in pcv.Categories
-                               where c.CategoryId == item.CategoryId
-                               select c;
+                                     where c.CategoryId == item.CategoryId
+                                     select c;
 
                     foreach (var it in categories)
                     {
@@ -74,7 +90,7 @@ namespace BlogSite_v1.Controllers
             return View(pcv);
         }
 
-        
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult EditPost(PostCategoryView pcv)
@@ -89,20 +105,20 @@ namespace BlogSite_v1.Controllers
                 var postCategory = pcv.PostCategories;
 
                 db.Entry(post).State = EntityState.Modified;
-                
+
                 db.SaveChanges();
-                
+
 
 
 
 
                 var checkedCategory = from x in pcv.Categories
-                                  where x.IsChecked == true
-                                  select x;
+                                      where x.IsChecked == true
+                                      select x;
 
                 var currentCategories = from cc in db.PostCategory
-                                   where cc.PostId == pcv.Post.PostId
-                                   select cc;
+                                        where cc.PostId == pcv.Post.PostId
+                                        select cc;
 
                 foreach (var ca in currentCategories)
                 {
@@ -115,7 +131,7 @@ namespace BlogSite_v1.Controllers
 
                     poca.PostId = pcv.Post.PostId;
                     poca.CategoryId = item.CategoryId;
-                    db.PostCategory.Add(poca );
+                    db.PostCategory.Add(poca);
                     db.SaveChanges();
 
                 }
@@ -124,11 +140,11 @@ namespace BlogSite_v1.Controllers
             }
 
             return RedirectToAction("Index");
-            
+
         }
 
         #endregion
-        
+
         #region Details of Posts
         public ActionResult DetailsPost(int? id)
         {
@@ -183,7 +199,7 @@ namespace BlogSite_v1.Controllers
                 if (postcc.Post.PostTitle == null)
                 {
                     ModelState.AddModelError("", "A post cannot be without a title!");
-                    checkTitle = false;                    
+                    checkTitle = false;
                 }
                 else
                 {
@@ -200,7 +216,7 @@ namespace BlogSite_v1.Controllers
                     checkContext = true;
                 }
 
-                if (postcc.Categories.All(x=> x.IsChecked == false))
+                if (postcc.Categories.All(x => x.IsChecked == false))
                 {
                     ModelState.AddModelError("", "A post cannot be without a category!");
                     checkCategory = false;
@@ -226,24 +242,24 @@ namespace BlogSite_v1.Controllers
                                  where x.IsChecked == true
                                  select x;
 
-                
-                    foreach (var item in checkedCat)
-                    {
 
-                        postCategory.CategoryId = item.CategoryId;
-                        postCategory.PostId = post.PostId;
-                        db.PostCategory.Add(postCategory);
-                        db.SaveChanges();
-                        
-                    }
-                    
-                
+                foreach (var item in checkedCat)
+                {
 
-                if(checkTitle && checkContext && checkCategory)
+                    postCategory.CategoryId = item.CategoryId;
+                    postCategory.PostId = post.PostId;
+                    db.PostCategory.Add(postCategory);
+                    db.SaveChanges();
+
+                }
+
+
+
+                if (checkTitle && checkContext && checkCategory)
                 {
                     return RedirectToAction("Index");
                 }
-                
+
 
             }
 
@@ -353,7 +369,7 @@ namespace BlogSite_v1.Controllers
         public ActionResult DeleteComment(int id)
         {
 
-            
+
 
             var deleteComment = new Comment();
             deleteComment = db.Comment.Find(id);
@@ -362,8 +378,8 @@ namespace BlogSite_v1.Controllers
             {
 
 
-            db.Comment.Remove(deleteComment);
-            db.SaveChanges();
+                db.Comment.Remove(deleteComment);
+                db.SaveChanges();
             }
 
             return RedirectToAction("DetailsPost", new { id = deleteComment.PostId });
