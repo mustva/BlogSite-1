@@ -1,0 +1,45 @@
+﻿
+@model BlogSite_v1.Models.UserRoleView
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<center><h2>User - Role Page</h2></center>
+<hr />
+
+<p>
+    @Html.ActionLink("Add New Role", "Create", null, new { @class = "btn btn-warning btn-sm" })
+</p>
+
+<hr />
+
+
+
+
+@foreach (var item in Model.MyUsers)
+{
+
+    <div align="right">
+
+        @foreach (var it in Model.MyUserRoles)
+        {
+            if (it.UserId == item.Id)
+            {
+
+                <kbd style="background-color:darkred">Role:</kbd><kbd>@it.AspNetRoles.Name</kbd>
+            }
+        }
+        @Html.ActionLink("Change Role", "ChangeRole", new { id = item.Id}, new { @class = "btn btn-success btn-xs" })
+    </div>
+
+    <div class="well well-sm">
+        @Html.DisplayFor(modelItem => item.UserName)
+    </div>
+
+}
+
+
+
+
+

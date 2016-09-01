@@ -30,34 +30,101 @@ namespace BlogSite_v1.Controllers
         [Authorize(Roles = "Admin")]
         #region Edit Post
         // GET: x/Edit/5
-        public ActionResult EditPost(int? id)
+        public ActionResult EditPost(int id)
         {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
+            var pcv = new PostCategoryView();
+
+            
             Post post = db.Post.Find(id);
+
+            pcv.Post = post;
+
+            pcv.Categories = db.Category.ToList();
+
+            pcv.PostCategories = (from pcate in db.PostCategory
+                                  where pcate.PostId == post.PostId
+                                  select pcate).ToList();
+
+            foreach (var item in pcv.PostCategories)
+            {
+                if (item.PostId == id)
+                {
+                    var categories = from c in pcv.Categories
+                               where c.CategoryId == item.CategoryId
+                               select c;
+
+                    foreach (var it in categories)
+                    {
+                        it.IsChecked = true;
+                    }
+
+                }
+            }
+
+
+
+
+
             if (post == null)
             {
                 return HttpNotFound();
             }
             ViewBag.UserId = new SelectList(db.AspNetUsers, "Id", "Email", post.UserId);
-            return View(post);
+
+            return View(pcv);
         }
 
         
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult EditPost([Bind(Include = "PostId,PostTitle,PostDate,PostContext,UserId")] Post post)
+        public ActionResult EditPost(PostCategoryView pcv)
         {
+            PostCategory poca = new PostCategory();
+
             if (ModelState.IsValid)
             {
+                var post = pcv.Post;
+
+                var category = pcv.Categories;
+                var postCategory = pcv.PostCategories;
+
                 db.Entry(post).State = EntityState.Modified;
+                
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                
+
+
+
+
+                var checkedCategory = from x in pcv.Categories
+                                  where x.IsChecked == true
+                                  select x;
+
+                var currentCategories = from cc in db.PostCategory
+                                   where cc.PostId == pcv.Post.PostId
+                                   select cc;
+
+                foreach (var ca in currentCategories)
+                {
+                    db.PostCategory.Remove(ca);
+                }
+
+
+                foreach (var item in checkedCategory)
+                {
+
+                    poca.PostId = pcv.Post.PostId;
+                    poca.CategoryId = item.CategoryId;
+                    db.PostCategory.Add(poca );
+                    db.SaveChanges();
+
+                }
+
+                db.SaveChanges();
             }
-            ViewBag.UserId = new SelectList(db.AspNetUsers, "Id", "Email", post.UserId);
-            return View(post);
+
+            return RedirectToAction("Index");
+            
         }
 
         #endregion

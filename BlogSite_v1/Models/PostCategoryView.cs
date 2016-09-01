@@ -6,7 +6,7 @@ using System.Data.Entity;
 
 namespace BlogSite_v1.Models
 {
-    public class PostCategoryView : DbContext
+    public class PostCategoryView 
     {
         public List<Post> Posts { get; set; }
         public List<Category> Categories { get; set; }
