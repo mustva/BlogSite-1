@@ -38,7 +38,13 @@
 
 
             <div class="panel panel-default">
-                <div class="panel-heading">@cat.AspNetUsers.UserName on @cat.CommentDate.Date</div>
+                <div class="panel-heading">@cat.AspNetUsers.UserName on 
+                @cat.CommentDate.Day
+                / @cat.CommentDate.Month
+                / @cat.CommentDate.Year
+                - @cat.CommentDate.DayOfWeek</div>
+
+
                 <div class="panel-body">
                     @cat.CommentContext
                     @if (Request.IsAuthenticated && User.IsInRole("Admin") || (User.IsInRole("User") && cat.AspNetUsers.UserName == User.Identity.Name))

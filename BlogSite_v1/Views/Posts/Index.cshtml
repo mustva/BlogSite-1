@@ -9,7 +9,7 @@
 
 @using (Html.BeginForm()) { 
 <div align="right" class="well well-sm">
-    Filter by category: @Html.TextBox("searchCategory");
+    Filter by category: @Html.TextBox("searchCategory")
     <input type="submit" value="Filter" />
 </div>
 }
@@ -41,10 +41,11 @@
         <div class="panel panel-success small">
             <div class="panel-heading well-sm">
                 @Html.ActionLink(@Html.DisplayFor(modelItem => item.PostTitle).ToString(), "DetailsPost", new { id = item.PostId })
-                <br /> Date: @Html.DisplayFor(modelItem => item.PostDate.Day)
+                <br /> Date: @Html.DisplayFor(modelItem => item.PostDate.Day) 
                 / @Html.DisplayFor(modelItem => item.PostDate.Month)
                 / @Html.DisplayFor(modelItem => item.PostDate.Year) 
                 - @Html.DisplayFor(modelItem => item.PostDate.DayOfWeek)
+                
             </div>
             <div class="panel-body well-sm">
                 @foreach (var cat in Model.PostCategories)

@@ -1,4 +1,4 @@
-﻿// T4 code generation is enabled for model 'C:\Users\asus\Documents\Visual Studio 2015\Projects\BlogSite_v1\BlogSite_v1\Models\BlogSiteModel.edmx'. 
+﻿// T4 code generation is enabled for model 'C:\Users\asus\documents\visual studio 2015\Projects\BlogSite_v1\BlogSite_v1\Models\BlogSiteModel.edmx'. 
 // To enable legacy code generation, change the value of the 'Code Generation Strategy' designer
 // property to 'Legacy ObjectContext'. This property is available in the Properties Window when the model
 // is open in the designer.
